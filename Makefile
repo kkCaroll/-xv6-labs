@@ -105,6 +105,11 @@ CFLAGS += -ffreestanding -fno-common -nostdlib -mno-relax
 CFLAGS += -I.
 CFLAGS += $(shell $(CC) -fno-stack-protector -E -x c /dev/null >/dev/null 2>&1 && echo -fno-stack-protector)
 
+# GCC 12+ enables -Winfinite-recursion in -Wall, which mis-fires on recursive
+# tree walkers such as sh.c's runcmd: every non-recursive exit there ends in a
+# noreturn call (exit()), so GCC sees no way out but the recursive ones.
+CFLAGS += -Wno-infinite-recursion
+
 ifeq ($(LAB),net)
 CFLAGS += -DNET_TESTS_PORT=$(SERVERPORT)
 endif
@@ -188,6 +193,7 @@ UPROGS=\
 	$U/_mkdir\
 	$U/_rm\
 	$U/_sh\
+	$U/_sleep\
 	$U/_stressfs\
 	$U/_usertests\
 	$U/_grind\
