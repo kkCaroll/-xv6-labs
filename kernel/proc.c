@@ -5,6 +5,7 @@
 #include "spinlock.h"
 #include "proc.h"
 #include "defs.h"
+#include "sysinfo.h"
 
 struct cpu cpus[NCPU];
 
@@ -657,3 +658,21 @@ procdump(void)
     printf("\n");
   }
 }
+
+
+// Count the number of processes in the system and return it to user space.
+uint64
+nproc(void)
+{
+  struct proc *p;
+  uint64 count = 0;
+  for(p = proc; p < &proc[NPROC]; p++){
+    acquire(&p->lock);
+    if(p->state != UNUSED){
+      count++;
+    }
+    release(&p->lock);
+  }
+  return count;
+}
+

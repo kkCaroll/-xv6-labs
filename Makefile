@@ -28,6 +28,7 @@ OBJS = \
   $K/pipe.o \
   $K/exec.o \
   $K/sysfile.o \
+  $K/sysinfo.o\
   $K/kernelvec.o \
   $K/plic.o \
   $K/virtio_disk.o
@@ -189,6 +190,7 @@ UPROGS=\
 	$U/_rm\
 	$U/_sh\
 	$U/_stressfs\
+	$U/_sysinfotest\
 	$U/_trace\
 	$U/_usertests\
 	$U/_grind\
